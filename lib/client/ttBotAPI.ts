@@ -179,7 +179,8 @@ export class TTBotAPI {
                     element.classList.remove("is-loading");
                     element.disabled = false;
                     this.savingDashboardChanges = false;
-                }
+                };
+                
                 (data === false ? Promise.resolve(fallback()) : <Promise<TOut>>method.call(this, ...args, data)).then(out => {
                     unlock();
                     cb(out);

@@ -77,7 +77,7 @@ import("../monaco").then(monaco => {
             const inp = document.createElement("input");
             inp.type = "file";
 
-            inp.onchange = () => {
+            inp.addEventListener("change", () => {
                 const [file] = inp.files ?? [];
                 if (!file?.type.includes("javascript")) {
                     const notif = createNotification(5000, ["is-danger"], "The file is not a valid JS file");
@@ -86,9 +86,9 @@ import("../monaco").then(monaco => {
                 }
                 file?.text().then(val => {
                     editor.setValue(val);
-                })
-            }
-
+                });
+            });
+            
             inp.click();
             inp.remove();
         },
@@ -276,5 +276,5 @@ import("../monaco").then(monaco => {
             }
         }, dataCollector, () => API.extension!);
         API.bindToResetButton(resetButton, setValues, API.extension!);
-    })
+    });
 });

@@ -30,7 +30,7 @@ export default class Cache<V> {
         private getter: (key: string, cache: Cache<V>) => Promise<V | ErrorObject>,
         private cleaner: (err: Error, addl: unknown) => Promise<void>) {}
 
-    remove(item?: string) {
+    remove(item?: string): void {
         if (item) delete this._cache[item];
     }
 
@@ -39,12 +39,17 @@ export default class Cache<V> {
             // Breaks intended typing
             // eslint-disable-next-line no-extra-parens
             if ((<ErrorObject>this._cache[item]).error) {
+                // Intended no-op
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
                 this._fetch(item, addl).catch(() => {});
                 return Promise.resolve(this._cache[item].data);
             }
             if (Date.now() - this._cache[item].time < this.resetTime) {
                 return Promise.resolve(this._cache[item].data);
             }
+
+            // Intended no-op
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             if (reCache) this._fetch(item, addl).catch(() => {});
             return Promise.resolve(this._cache[item].data);
         }
@@ -63,8 +68,8 @@ export default class Cache<V> {
                 // eslint-disable-next-line no-extra-parens
                 console.error((<ErrorObject>data).error); //eslint-disable-line no-console
 
-                // Breaks intended typing
-                // eslint-disable-next-line no-extra-parens
+                // Breaks intended typing + intended no-op
+                // eslint-disable-next-line no-extra-parens,@typescript-eslint/no-empty-function
                 this.cleaner((<ErrorObject>data).error, addl).catch(() => {});
                 delete this._fetching[item];
                 // Breaks intended typing

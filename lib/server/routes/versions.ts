@@ -17,6 +17,9 @@
  * along with @tt-bot-dev/web.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// require() is used here to aid readability
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 import type { Polka } from "polka";
 import type { Config, TTBotClient } from "@tt-bot-dev/types";
 import render from "../utils/render";
@@ -31,6 +34,6 @@ export default function (app: Polka, _: typeof import("csurf"), config: Config, 
             sosambaVersion: require.main?.require("sosamba/package.json").version,
             selfVersion: require("../../../package.json").version,
             typesVersion: require("@tt-bot-dev/types/package.json").version
-        }))
-    })
+        }));
+    });
 }

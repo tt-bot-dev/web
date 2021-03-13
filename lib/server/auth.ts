@@ -86,12 +86,12 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
     }, async (err, addl) => {
         if (
             // The access token is revoked, or does not have appropriate permissions
+            // Breaks intended typing
+            // eslint-disable-next-line no-extra-parens
             (<ErrorWithCode>err).code !== 401
         ) return;
 
-        console.log(`Discarding session ${addl} as the access has been revoked`);
-
-        await new Promise<void>((rs, rj) => sessStore.destroy(<string>addl, e => e ? rs() : rj(e)))
+        await new Promise<void>((rs, rj) => sessStore.destroy(<string>addl, e => e ? rs() : rj(e)));
     });
     const authToken = `Basic ${Buffer.from(`${config.clientID}:${config.clientSecret}`).toString("base64")}`;
     
@@ -168,15 +168,16 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
                         accessToken: body.access_token,
                         refreshToken: body.refresh_token
                     },
-                    destroy(cb: Function): void {
-                        cb();
+
+                    destroy(cb: (err: unknown) => void): void {
+                        cb(undefined);
                     }
                 };
 
                 await this.logout({
                     // @ts-expect-error: Partial object to discard the tokens
                     session: sess
-                })
+                });
                 throw new Error("Scopes required for operation of the application were not granted");
             }
 
