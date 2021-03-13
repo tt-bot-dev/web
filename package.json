@@ -1,0 +1,77 @@
+{
+  "name": "@tt-bot-dev/web",
+  "version": "1.0.0",
+  "description": "The web dashboard for tt.bot",
+  "main": "dist/server/index.js",
+  "scripts": {
+    "build::server": "tsc -p tsconfig.json",
+    "build::client": "parcel build --dist-dir dist-client --public-url '/static/' --no-scope-hoist --no-source-maps './lib/client/bundle/*'",
+    "build::all": "npm run build::server && npm run build::client",
+    "lint": "eslint --ext .js,.ts .",
+    "lint::fix": "eslint --ext .js,.ts --fix .",
+    "install": "npm run build::all"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://owo.codes/tt.bot/modules/web.git"
+  },
+  "keywords": [
+    "tt.bot",
+    "web",
+    "dashboard",
+    "api"
+  ],
+  "author": "TTtie <me@tttie.cz>",
+  "license": "AGPL-3.0-or-later",
+  "dependencies": {
+    "@parcel/optimizer-cssnano": "^2.0.0-nightly.625",
+    "@parcel/packager-css": "^2.0.0-nightly.625",
+    "@parcel/transformer-css": "^2.0.0-nightly.625",
+    "@parcel/transformer-postcss": "^2.0.0-nightly.625",
+    "@parcel/transformer-sass": "^2.0.0-nightly.625",
+    "@polka/redirect": "^1.0.0-next.0",
+    "@polka/send-type": "^0.5.2",
+    "@tt-bot-dev/types": "git+https://owo.codes/tt.bot/modules/types.git",
+    "@types/cookie": "^0.4.0",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/cookie-signature": "^1.0.3",
+    "@types/csurf": "^1.11.0",
+    "@types/ejs": "^3.0.5",
+    "@types/express-session": "^1.17.3",
+    "@types/mime-types": "^2.1.0",
+    "@types/node": "^14.14.14",
+    "@types/polka": "^0.5.1",
+    "@types/uuid": "^8.3.0",
+    "body-parser": "^1.19.0",
+    "bulma": "^0.9.1",
+    "cookie": "^0.4.1",
+    "cookie-parser": "^1.4.5",
+    "cookie-signature": "^1.1.0",
+    "csurf": "git+https://owo.codes/tt.bot/external/csurf.git",
+    "discord-api-types": "^0.12.1",
+    "ejs": "^3.1.5",
+    "express-session": "^1.17.1",
+    "chainfetch": "^1.2.2",
+    "monaco-editor": "^0.23.0",
+    "node-fetch": "^2.6.1",
+    "parcel": "^2.0.0-nightly.625",
+    "polka": "^0.5.2",
+    "postcss": "^8.2.6",
+    "sass": "^1.32.5",
+    "sosamba": "^1.1.2",
+    "typescript": "^4.1.3",
+    "uuid": "^8.3.2"
+  },
+  "browserslist": [
+    "supports async-functions and supports es6-module"
+  ],
+  "targets": {
+    "main": false
+  },
+  "devDependencies": {
+    "@tt-bot-dev/eslint-config": "^1.0.4",
+    "@typescript-eslint/eslint-plugin": "^4.15.1",
+    "@typescript-eslint/parser": "^4.15.1",
+    "eslint": "^7.20.0"
+  }
+}

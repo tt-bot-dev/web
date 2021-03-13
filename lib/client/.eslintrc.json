@@ -1,0 +1,10 @@
+{
+    "extends": "../../.eslintrc.json",
+    "rules": {
+        // Most of the errors come from situations where the element
+        // is known to be present
+        "@typescript-eslint/no-non-null-assertion": "off",
+        // no-extra-parens breaks intended typecast accesses
+        "no-extra-parens": "off"
+    }
+}

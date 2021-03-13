@@ -1,0 +1,7 @@
+dist/
+dist-client/
+node_modules/
+package-lock.json
+*.tsbuildinfo
+license-preambles.txt
+.parcel-cache

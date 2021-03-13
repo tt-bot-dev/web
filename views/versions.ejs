@@ -1,0 +1,271 @@
+<%#
+Copyright (C) 2021 tt.bot dev team
+ 
+This file is part of @tt-bot-dev/web.
+ 
+@tt-bot-dev/web is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+ 
+@tt-bot-dev/web is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+ 
+You should have received a copy of the GNU Affero General Public License
+along with @tt-bot-dev/web.  If not, see <http://www.gnu.org/licenses/>.
+%>
+
+<!DOCTYPE html>
+<html>
+<%- include("./partials/head") %>
+
+<body>
+    <section class="hero is-primary">
+        <div class="hero-head"><%- include("./partials/header", { isLanding: false }) %></div>
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title is-1 is-size-3-mobile">tt.bot's components</h1>
+                <h3 class="subtitle is-3 is-size-5-mobile">tt.bot is powered by various components under various licenses.</h3>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="level">
+                <div class="level-left">
+                    <div>
+                        <h3 class="title">tt.bot v<%=ttbotVersion%></h3>
+                        <h5 class="subtitle">The bot itself</h5>
+                    </div>
+                </div>
+
+                <div class="level-right">
+                    <div class="field is-grouped is-grouped-multiline">
+                        <div class="control">
+                            <a href="https://owo.codes/tt.bot/bot/-/blob/master/LICENSE">
+                                <div class="tags has-addons">
+                                    <span class="tag">
+                                        <span class="icon"><i class="fas fa-balance-scale"></i></span>
+                                    </span>
+                                    <span class="tag">
+                                        GNU AGPLv3 or later
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="control">
+                            <a href="https://owo.codes/tt.bot/bot">
+                                <div class="tags has-addons">
+                                    <span class="tag">
+                                        <span class="icon"><i class="fab fa-js-square"></i></span>
+                                    </span>
+                                    <span class="tag">
+                                        JavaScript
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-left">
+                    <div>
+                        <h3 class="title">e2p v<%=e2pVersion%></h3>
+                        <h5 class="subtitle">Image operations for the <code>emoji</code> command</h5>
+                    </div>
+                </div>
+
+                <div class="level-right">
+                    <div class="field is-grouped is-grouped-multiline">
+                        <div class="control">
+                            <a href="https://owo.codes/tt.bot/modules/e2p/-/blob/master/LICENSE">
+                                <div class="tags has-addons">
+                                    <span class="tag">
+                                        <span class="icon"><i class="fas fa-balance-scale"></i></span>
+                                    </span>
+                                    <span class="tag">
+                                        GNU GPLv3 or later
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="control">
+                            <a href="https://owo.codes/tt.bot/modules/e2p">
+                                <div class="tags has-addons">
+                                    <span class="tag">
+                                        <span class="icon"><i class="fab fa-rust"></i></span>
+                                    </span>
+                                    <span class="tag">
+                                        Rust
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="level">
+                <div class="level-left">
+                    <div>
+                        <h3 class="title">extension-runner v<%=extensionRunnerVersion%></h3>
+                        <h5 class="subtitle">Powers the extension sandbox
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="level-right">
+                    <div class="field is-grouped is-grouped-multiline">
+                        <div class="control">
+                            <a href="https://owo.codes/tt.bot/extensions/runner/-/blob/master/LICENSE">
+                                <div class="tags has-addons">
+                                    <span class="tag">
+                                        <span class="icon"><i class="fas fa-balance-scale"></i></span>
+                                    </span>
+                                    <span class="tag">
+                                        GNU AGPLv3 or later
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="control">
+                            <a href="https://owo.codes/tt.bot/extensions/runner">
+                                <div class="tags has-addons">
+                                    <span class="tag">
+                                        <span class="icon"><i class="fab fa-js-square"></i></span>
+                                    </span>
+                                    <span class="tag">
+                                        JavaScript
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-left">
+                    <div>
+                        <h3 class="title">web v<%=selfVersion%></h3>
+                        <h5 class="subtitle">The web dashboard you're seeing right now
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="level-right">
+                    <div class="field is-grouped is-grouped-multiline">
+                        <div class="control">
+                            <a href="https://owo.codes/tt.bot/extensions/runner/-/blob/master/LICENSE">
+                                <div class="tags has-addons">
+                                    <span class="tag">
+                                        <span class="icon"><i class="fas fa-balance-scale"></i></span>
+                                    </span>
+                                    <span class="tag">
+                                        GNU AGPLv3 or later
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="control">
+                            <a href="https://owo.codes/tt.bot/modules/web">
+                                <div class="tags has-addons">
+                                    <span class="tag">
+                                        <span class="icon"><i class="fab fa-js-square"></i></span>
+                                    </span>
+                                    <span class="tag">
+                                        TypeScript
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-left">
+                    <div>
+                        <h3 class="title">types v<%=typesVersion%></h3>
+                        <h5 class="subtitle">Internal TypeScript typings for tt.bot
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="level-right">
+                    <div class="field is-grouped is-grouped-multiline">
+                        <div class="control">
+                            
+                                <div class="tags has-addons">
+                                    <span class="tag">
+                                        <span class="icon"><i class="fas fa-balance-scale"></i></span>
+                                    </span>
+                                    <span class="tag">
+                                        GNU AGPLv3 or later
+                                    </span>
+                                </div>
+                        </div>
+                        <div class="control">
+                            <a href="https://owo.codes/tt.bot/modules/types">
+                                <div class="tags has-addons">
+                                    <span class="tag">
+                                        <span class="icon"><i class="fab fa-js-square"></i></span>
+                                    </span>
+                                    <span class="tag">
+                                        TypeScript
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-left">
+                    <div>
+                        <h3 class="title">sosamba v<%=sosambaVersion%></h3>
+                        <h5 class="subtitle">The command framework built with tt.bot in mind
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="level-right">
+                    <div class="field is-grouped is-grouped-multiline">
+                        <div class="control">
+                            <a href="https://owo.codes/tt.bot/frameworks/sosamba/-/blob/master/LICENSE">
+                                <div class="tags has-addons">
+                                    <span class="tag">
+                                        <span class="icon"><i class="fas fa-balance-scale"></i></span>
+                                    </span>
+                                    <span class="tag">
+                                        MIT
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="control">
+                            <a href="https://owo.codes/tt.bot/frameworks/sosamba">
+                                <div class="tags has-addons">
+                                    <span class="tag">
+                                        <span class="icon"><i class="fab fa-js-square"></i></span>
+                                    </span>
+                                    <span class="tag">
+                                        JavaScript
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include("partials/footer") %>
+</body>
+
+</html>

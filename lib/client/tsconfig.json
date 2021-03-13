@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.Iterable"],
+    "outDir": "../../dist-client",
+    "rootDir": "../",
+    "moduleResolution": "node",
+  },
+  "include": ["./", "../common"],
+  "typeAcquisition": {
+    "enable": true
+  },
+  "extends": "../../tsconfig.json"
+}
