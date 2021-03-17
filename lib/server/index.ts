@@ -97,7 +97,7 @@ export default function launchWebServer(bot: TTBotClient, config: Config): void 
 
     loadMiddleWare(app, bot, log, config, auth, sessStore);
 
-    if (config.serveStatic) {
+    if (config.webserver.serveStatic) {
         app.use("/static", staticRoutes(app, `${__dirname}/../../dist-client`));
     }
 
@@ -113,13 +113,13 @@ export default function launchWebServer(bot: TTBotClient, config: Config): void 
     licenseRoutes(app, csrfProtection, config, bot);
 
     createHTTPServer(<RequestListener>app.handler)
-        .listen(config.httpPort, config.webserverip ?? "0.0.0.0", () => {
+        .listen(config.webserver.httpPort, config.webserver.host ?? "0.0.0.0", () => {
             log.info("Loaded HTTP dashboard");
         });
 
-    if (config.httpsPort) {
-        createHTTPSServer(config.httpsSettings ?? {}, <RequestListener>app.handler)
-            .listen(config.httpsPort, config.webserverip ?? "0.0.0.0", () => {
+    if (config.webserver.httpsPort) {
+        createHTTPSServer(config.webserver.httpsSettings ?? {}, <RequestListener>app.handler)
+            .listen(config.webserver.httpsPort, config.webserver.host ?? "0.0.0.0", () => {
                 log.info("Loaded HTTPS dashboard");
             });
     }

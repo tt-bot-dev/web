@@ -314,14 +314,14 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
                 rs.send(await bot.db.getGuildExtension(extensionID));
             }
 
-            if (requestedFlags.length && config.extensionFlagRequest) {
-                await bot.executeWebhook(config.extensionFlagRequest.id, config.extensionFlagRequest.token, {
+            if (requestedFlags.length && config.webserver.extensionFlagRequest) {
+                await bot.executeWebhook(config.webserver.extensionFlagRequest.id, config.webserver.extensionFlagRequest.token, {
                     content: filteredBody.id,
                     embeds: [{
                         title: `"${filteredBody.name}" requested a privileged flag`,
                         // Breaks intended typing
                         // eslint-disable-next-line no-extra-parens
-                        description: `**Requested scopes:**\n${requestedFlags.join(", ")}\n\n[View the extension](${(<(str: string) => string><unknown>config.webserverDisplay)(`/dashboard/${filteredBody.guildID}/extensions/${filteredBody.id}`)})`,
+                        description: `**Requested scopes:**\n${requestedFlags.join(", ")}\n\n[View the extension](${(<(str: string) => string><unknown>config.webserver.display)(`/dashboard/${filteredBody.guildID}/extensions/${filteredBody.id}`)})`,
                         color: 0x008800,
                         footer: {
                             text: `Type ${config.prefix}allowextflag ${filteredBody.id} <flags> to grant these extension flags`
