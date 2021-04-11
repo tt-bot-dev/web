@@ -36,8 +36,6 @@ export default class Cache<V> {
 
     get(item: string, addl: unknown, reCache = true): Promise<V> {
         if (this._cache[item]) {
-            // Breaks intended typing
-            // eslint-disable-next-line no-extra-parens
             if ((<ErrorObject>this._cache[item]).error) {
                 // Intended no-op
                 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -61,19 +59,13 @@ export default class Cache<V> {
             return this._fetching[item];
         }
         return this._fetching[item] = this.getter(item, this).then(data => {
-            // Breaks intended typing
-            // eslint-disable-next-line no-extra-parens
             if ((<ErrorObject>data).error) {
-                // Breaks intended typing
-                // eslint-disable-next-line no-extra-parens
                 console.error((<ErrorObject>data).error); //eslint-disable-line no-console
 
-                // Breaks intended typing + intended no-op
-                // eslint-disable-next-line no-extra-parens,@typescript-eslint/no-empty-function
+                // Intended no-op
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
                 this.cleaner((<ErrorObject>data).error, addl).catch(() => {});
                 delete this._fetching[item];
-                // Breaks intended typing
-                // eslint-disable-next-line no-extra-parens
                 throw (<ErrorObject>data).error;
             }
             this._cache[item] = <{ time: number, data: V }>{ time: Date.now(), data };

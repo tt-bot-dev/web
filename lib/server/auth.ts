@@ -86,8 +86,6 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
     }, async (err, addl) => {
         if (
             // The access token is revoked, or does not have appropriate permissions
-            // Breaks intended typing
-            // eslint-disable-next-line no-extra-parens
             (<ErrorWithCode>err).code !== 401
         ) return;
 

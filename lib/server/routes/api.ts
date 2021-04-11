@@ -133,8 +133,6 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
             });
         } else {
             const filteredBody: Partial<GuildConfig> = {};
-            // Breaks intended typing
-            // eslint-disable-next-line no-extra-parens
             Object.keys<Record<string, unknown>>(rq.body).filter(k => (<readonly string[]>AllowedGuildConfigProperties).includes(k))
                 .forEach(k => {
                     filteredBody[<keyof GuildConfig>k] = rq.body[k] || null;
@@ -170,8 +168,6 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
                 return;
             }
 
-            // Breaks intended typing
-            // eslint-disable-next-line no-extra-parens
             Object.keys(extension).filter(k => (<string[]>DefaultExtensionKeys).includes(k))
                 .forEach(k => {
                     // @ts-expect-error: I apparently am not smart enough to make this work.
@@ -204,8 +200,6 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
                 return;
             }
 
-            // Breaks intended typing
-            // eslint-disable-next-line no-extra-parens
             Object.keys<Record<string, unknown>>(rq.body).filter(k => (<readonly string[]>AllowedGuildExtensionProperties).includes(k))
                 .forEach(k => {
                     filteredBody[<keyof GuildExtension>k] = rq.body[k] ?? undefined;
@@ -253,8 +247,6 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
 
                 for (const scope of ExtensionFlagKeys) {
                     if ((filteredBody.flags ?? 0) & ExtensionFlags[scope] &&
-                        // Breaks intended typing
-                        // eslint-disable-next-line no-extra-parens
                         (<readonly string[]>PrivilegedExtensionScopes).includes(scope)) {
                         if (filteredBody.code !== extension.code ||
                             !(extension.flags & ExtensionFlags[scope]) &&
