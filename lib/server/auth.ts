@@ -54,6 +54,7 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
         client: ErisClient
     }> {
         const c = cache._cache[token]?.data?.client ?? new Client(`Bearer ${token}`, {
+            intents: 0,
             restMode: true
         });
         try {
@@ -71,7 +72,9 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
             };
     
         } catch (err) {
-            if (err.code === "ETIMEDOUT") return cache._cache[token]?.data;
+            if ((err as {
+                code: string;
+            }).code === "ETIMEDOUT") return cache._cache[token]?.data;
             else throw err;
         }
     }
@@ -81,7 +84,7 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
         try {
             return await getUserInfo(token, cache);
         } catch (e) {
-            return { error: e };
+            return { error: e as ErrorWithCode };
         }
     }, async (err, addl) => {
         if (
