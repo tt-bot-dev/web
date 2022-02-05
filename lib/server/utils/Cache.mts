@@ -36,7 +36,7 @@ export default class Cache<V> {
 
     get(item: string, addl: unknown, reCache = true): Promise<V> {
         if (this._cache[item]) {
-            if ((<ErrorObject>this._cache[item]).error) {
+            if ((this._cache[item] as ErrorObject).error) {
                 // Intended no-op
                 // eslint-disable-next-line @typescript-eslint/no-empty-function
                 this._fetch(item, addl).catch(() => {});
@@ -55,22 +55,22 @@ export default class Cache<V> {
     }
     
     _fetch(item: string, addl: unknown): Promise<V> {
-        if (this._fetching[item]) {
+        if (this._fetching[item] !== undefined) {
             return this._fetching[item];
         }
         return this._fetching[item] = this.getter(item, this).then(data => {
-            if ((<ErrorObject>data).error) {
-                console.error((<ErrorObject>data).error); //eslint-disable-line no-console
+            if ((data as ErrorObject).error) {
+                console.error((data as ErrorObject).error); //eslint-disable-line no-console
 
                 // Intended no-op
                 // eslint-disable-next-line @typescript-eslint/no-empty-function
-                this.cleaner((<ErrorObject>data).error, addl).catch(() => {});
+                this.cleaner((data as ErrorObject).error, addl).catch(() => {});
                 delete this._fetching[item];
-                throw (<ErrorObject>data).error;
+                throw (data as ErrorObject).error;
             }
-            this._cache[item] = <{ time: number, data: V }>{ time: Date.now(), data };
+            this._cache[item] = { time: Date.now(), data } as { time: number, data: V };
             delete this._fetching[item];
-            return <V>data;
+            return data as V;
         });
     }
     

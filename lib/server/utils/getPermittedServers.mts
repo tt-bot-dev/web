@@ -17,7 +17,7 @@
  * along with @tt-bot-dev/web.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import isOwner from "./isOwner";
+import isOwner from "./isOwner.mjs";
 import { Eris } from "sosamba";
 const { Permission } = Eris;
 

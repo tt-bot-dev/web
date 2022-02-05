@@ -19,12 +19,12 @@
 
 import type { Polka } from "polka";
 import type { Config, TTBotClient } from "@tt-bot-dev/types";
-import checkNotAuth from "../middleware/checkNotAuth";
-import { OAuthScopes } from "../../common/constants";
-import type { Authenticator } from "../auth";
-import checkAuth from "../middleware/checkAuth";
-import render from "../utils/render";
-import makeTemplatingData from "../utils/makeTemplateData";
+import checkNotAuth from "../middleware/checkNotAuth.mjs";
+import { OAuthScopes } from "../../common/constants.mjs";
+import type { Authenticator } from "../auth.mjs";
+import checkAuth from "../middleware/checkAuth.mjs";
+import render from "../utils/render.mjs";
+import makeTemplatingData from "../utils/makeTemplateData.mjs";
 
 
 export default function (app: Polka, csrfProtection: typeof import("csurf"), config: Config, auth: Authenticator, bot: TTBotClient): void {
@@ -46,7 +46,7 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
         }
         if (!rq.query.code) return rs.redirect("/login");
         try {
-            await auth.getAccessToken(<string>rq.query.code, rq);
+            await auth.getAccessToken(rq.query.code as string, rq);
         } catch {
             return rs.redirect("/login");
         }

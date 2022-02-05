@@ -17,10 +17,10 @@
  * along with @tt-bot-dev/web.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { APIUser } from "discord-api-types/v6";
+import type { APIUser } from "discord-api-types/v9";
 import type { Config, TTBotClient } from "@tt-bot-dev/types";
 import type { Request } from "express";
-const { version: ttbotVersion } = <{ version: string }>require.main?.require("./package.json");
+const { default: { version: ttbotVersion }} = await import(`${process.mainModule?.path}/lib/package.mjs`);
 
 export default function makeTemplatingData<T>(rq: Request, bot: TTBotClient, config: Config, object?: T): ({
     user: APIUser | null;

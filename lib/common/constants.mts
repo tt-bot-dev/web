@@ -17,7 +17,7 @@
  * along with @tt-bot-dev/web.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const DiscordAPIBase = "https://discord.com/api/v8/oauth2";
+export const DiscordAPIBase = "https://discord.com/api/v9/oauth2";
 export const OAuthScopes = ["identify", "guilds"] as const;
 export const AllowedGuildConfigProperties = [
     "prefix",
@@ -42,6 +42,11 @@ export const AllowedGuildExtensionProperties = [
     "name",
     "store",
     "flags"
+] as const;
+
+export const AllowedUserProfileProperties = [
+    "locale",
+    "timezone"
 ] as const;
 
 export const Routes = {

@@ -17,19 +17,19 @@
  * along with @tt-bot-dev/web.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { OAuth2User, ErrorWithCode } from "./utils/types";
+import type { OAuth2User, ErrorWithCode } from "./utils/types.mjs";
 import type { Client as ErisClient } from "eris";
 import type { Request, Response } from "express-serve-static-core";
 import { Eris } from "sosamba";
 const { Client } = Eris;
-import Cache from "./utils/Cache";
-import { post } from "chainfetch";
-import { DiscordAPIBase } from "../common/constants";
-import type { APIUser, RESTGetAPICurrentUserGuildsResult } from "discord-api-types/v6";
+import Cache from "./utils/Cache.mjs";
+import { DiscordAPIBase, OAuthScopes } from "../common/constants.mjs";
+import { request } from "undici";
+import type { APIUser, RESTGetAPICurrentUserGuildsResult } from "discord-api-types/v9";
 import type { Next } from "polka";
 import type { Config, TTBotClient } from "@tt-bot-dev/types";
 import type { Store } from "express-session";
-import { OAuthScopes } from "../common/constants";
+import bodyParser from "body-parser";
 
 export type UserData = {
     user: OAuth2User,
@@ -59,8 +59,8 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
         });
         try {
             const [ userData, guilds ] = await Promise.all([
-                <APIUser><unknown>await c.requestHandler.request("GET", "/users/@me", true),
-                <RESTGetAPICurrentUserGuildsResult><unknown>await c.requestHandler.request("GET", "/users/@me/guilds", true)
+                c.requestHandler.request("GET", "/users/@me", true) as Promise<APIUser>,
+                c.requestHandler.request("GET", "/users/@me/guilds", true) as Promise<RESTGetAPICurrentUserGuildsResult>
             ]);
     
             return {
@@ -89,10 +89,10 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
     }, async (err, addl) => {
         if (
             // The access token is revoked, or does not have appropriate permissions
-            (<ErrorWithCode>err).code !== 401
+            (err as ErrorWithCode).code !== 401
         ) return;
 
-        await new Promise<void>((rs, rj) => sessStore.destroy(<string>addl, e => e ? rs() : rj(e)));
+        await new Promise<void>((rs, rj) => sessStore.destroy(addl as string, e => e ? rs() : rj(e)));
     });
     const authToken = `Basic ${Buffer.from(`${config.clientID}:${config.clientSecret}`).toString("base64")}`;
     
@@ -124,14 +124,19 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
         },
     
         async refreshToken(code: string, rq: Request) {
-            const data = await post(`${DiscordAPIBase}/token`)
-                .set("Authorization", authToken)
-                .attach({
+            const data = await request(`${DiscordAPIBase}/token`, {
+                method: "POST",
+                headers: {
+                    authorization: authToken,
+                    "content-type": "application/x-www-form-urlencoded"
+                },
+                body: new URLSearchParams({
                     refresh_token: code,
                     grant_type: "refresh_token"
-                })
-                .toJSON();
-            const { body } = data;
+                }).toString()
+            });
+
+            const body = await data.body.json();
             const dateAfterReq = Date.now();
             const userData = await userCache.get(body.access_token, rq.sessionID);
             rq.session.tokenData = {
@@ -147,9 +152,13 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
         },
     
         async getAccessToken(code: string, rq: Request) {
-            const data = await post(`${DiscordAPIBase}/token`)
-                .set("Authorization", authToken)
-                .attach({
+            const data = await request(`${DiscordAPIBase}/token`, {
+                method: "POST",
+                headers: {
+                    authorization: authToken,
+                    "content-type": "application/x-www-form-urlencoded"
+                },
+                body: new URLSearchParams({
                     client_id: config.clientID,
                     client_secret: config.clientSecret,
                     code,
@@ -158,9 +167,9 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
                     // Most decent browsers provide a Host header nowadays
                     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                     redirect_uri: `${rq.protocol}://${rq.headers.host!}/callback`
-                })
-                .toJSON();
-            const { body } = data;
+                }).toString()
+            });
+            const body = await data.body.json();
             const { scope } = body;
             const grantedScopes = scope.split(" ");
             if (OAuthScopes.some(scope => !grantedScopes.includes(scope))) {
@@ -202,21 +211,30 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
         async logout(rq: Request) {
             if (!rq.session.tokenData) return;
 
-            //@ts-expect-error: Chainfetch objects are thenables, however, the implementation of then() in the typings seems to be broken.
             await Promise.all([
-                post(`${DiscordAPIBase}/token/revoke`)
-                    .set("Authorization", authToken)
-                    .attach({
+                request(`${DiscordAPIBase}/token/revoke`, {
+                    method: "POST",
+                    headers: {
+                        authorization: authToken,
+                        "content-type": "application/x-www-form-urlencoded"
+                    },
+                    body: new URLSearchParams({
                         token: rq.session.tokenData.accessToken,
                         token_type_hint: "access_token"
-                    }),
+                    }).toString()
+                }),
 
-                post(`${DiscordAPIBase}/token/revoke`)
-                    .set("Authorization", authToken)
-                    .attach({
+                request(`${DiscordAPIBase}/token/revoke`, {
+                    method: "POST",
+                    headers: {
+                        authorization: authToken,
+                        "content-type": "application/x-www-form-urlencoded"
+                    },
+                    body: new URLSearchParams({
                         token: rq.session.tokenData.refreshToken,
                         token_type_hint: "refresh_token"
-                    }),
+                    }).toString()
+                }),
                 
                 new Promise<void>(rs => {
                     const v = rq.session.tokenData?.accessToken;

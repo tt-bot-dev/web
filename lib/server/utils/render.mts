@@ -18,10 +18,11 @@
  */
 
 import type { ServerResponse } from "http";
+import type { Response } from "express";
 import ejs, { Data } from "ejs";
 import send from "@polka/send-type";
 
-export default async function render(rs: ServerResponse, file: string, data: Data = {}, isHTML = true): Promise<void> {
+export default async function render(rs: ServerResponse | Response, file: string, data: Data = {}, isHTML = true): Promise<void> {
     const p = `${__dirname}/../../../views/${file}${file.endsWith(".ejs") ? "" : ".ejs"}`;
     const str = await ejs.renderFile(p, data);
     send(rs, 200, str, isHTML ? { "Content-Type": "text/html" } : {});

@@ -17,10 +17,10 @@
  * along with @tt-bot-dev/web.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import checkAuth from "../middleware/checkAuth";
-import UserProfile from "../structures/UserProfile";
-import { AllowedGuildConfigProperties, AllowedUserProfileProperties, Routes } from "../../common/constants";
-import getGuilds from "../utils/getPermittedServers";
+import checkAuth from "../middleware/checkAuth.mjs";
+import UserProfile from "../structures/UserProfile.mjs";
+import { AllowedGuildConfigProperties, AllowedUserProfileProperties, Routes } from "../../common/constants.mjs";
+import getGuilds from "../utils/getPermittedServers.mjs";
 import type { Polka } from "polka";
 import type { Config, GuildConfig, TTBotClient, UserProfile as Profile } from "@tt-bot-dev/types";
 import type { Role } from "eris";
@@ -132,9 +132,9 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
             });
         } else {
             const filteredBody: Partial<GuildConfig> = {};
-            Object.keys<Record<string, unknown>>(rq.body).filter(k => (<readonly string[]>AllowedGuildConfigProperties).includes(k))
+            Object.keys<Record<string, unknown>>(rq.body).filter(k => (AllowedGuildConfigProperties as readonly string[]).includes(k))
                 .forEach(k => {
-                    filteredBody[<keyof GuildConfig>k] = rq.body[k] || null;
+                    filteredBody[k as keyof GuildConfig] = rq.body[k] || null;
                 });
 
             filteredBody.id = rq.params.guildID;
@@ -164,8 +164,8 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
         const filteredBody: Partial<Profile> = {};
         // Breaks intended typing
         // eslint-disable-next-line no-extra-parens
-        Object.keys<Record<string, unknown>>(rq.body).filter(k => (<string[]>AllowedUserProfileProperties).includes(k)).forEach(k => {
-            filteredBody[<keyof Profile>k] = rq.body[k] || null;
+        Object.keys<Record<string, unknown>>(rq.body).filter(k => (AllowedUserProfileProperties as readonly string[]).includes(k)).forEach(k => {
+            filteredBody[k as keyof Profile] = rq.body[k] || null;
         });
         filteredBody.id = rq.user.id;
         // @ts-expect-error: Not typed in Sosamba yet
@@ -185,7 +185,7 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
             return;
         }
 
-        const profile = UserProfile.create(<Profile><unknown>filteredBody, bot);
+        const profile = UserProfile.create(filteredBody as unknown as Profile, bot);
         if (!await bot.db.getUserProfile(rq.user.id)) {
             await bot.db.createUserProfile(profile);
         } else {

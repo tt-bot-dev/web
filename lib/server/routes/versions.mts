@@ -22,18 +22,22 @@
 
 import type { Polka } from "polka";
 import type { Config, TTBotClient } from "@tt-bot-dev/types";
-import render from "../utils/render";
-import makeTemplatingData from "../utils/makeTemplateData";
+import render from "../utils/render.mjs";
+import makeTemplatingData from "../utils/makeTemplateData.mjs";
+
+import pkg from "../../common/package.mjs";
+
+
 
 export default function (app: Polka, _: typeof import("csurf"), config: Config, bot: TTBotClient): void {
     app.get("/versions", async (rq, rs) => {
         await render(rs, "versions", makeTemplatingData(rq, bot, config, {
             pageTitle: "Versions",
-            e2pVersion: require.main?.require("@tt-bot-dev/e2p/package.json").version,
-            extensionRunnerVersion: require.main?.require("@tt-bot-dev/extension-runner/package.json").version,
-            sosambaVersion: require.main?.require("sosamba/package.json").version,
-            selfVersion: require("../../../package.json").version,
-            typesVersion: require("@tt-bot-dev/types/package.json").version
+            e2pVersion: process.mainModule?.require("@tt-bot-dev/e2p/package.json").version,
+            extensionRunnerVersion: "0.0.0",
+            sosambaVersion: process.mainModule?.require("sosamba/package.json").version,
+            selfVersion: pkg.version,
+            typesVersion: process.mainModule?.require("@tt-bot-dev/types/package.json").version
         }));
     });
 }

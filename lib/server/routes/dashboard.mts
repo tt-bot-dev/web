@@ -17,14 +17,14 @@
  * along with @tt-bot-dev/web.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import getGuilds from "../utils/getPermittedServers";
+import getGuilds from "../utils/getPermittedServers.mjs";
 import type { Polka } from "polka";
 import type { Config, DBProvider, GuildConfig, TTBotClient } from "@tt-bot-dev/types";
-import checkAuth from "../middleware/checkAuth";
-import render from "../utils/render";
-import makeTemplatingData from "../utils/makeTemplateData";
+import checkAuth from "../middleware/checkAuth.mjs";
+import render from "../utils/render.mjs";
+import makeTemplatingData from "../utils/makeTemplateData.mjs";
 
-const { availableTypes } = require.main?.require("./lib/logging");
+const { availableTypes } = await import(`${process.mainModule?.path}/lib/logging.mjs`);
 
 async function makeDefaultConfig(db: DBProvider, config: Config, guildID: string): Promise<Partial<GuildConfig>> {
     const guildConfig = {

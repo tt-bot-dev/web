@@ -29,8 +29,8 @@ import redirect from "@polka/redirect";
 import { STATUS_CODES as HTTPStatusCodes } from "http";
 import session from "express-session";
 import type { TLSSocket } from "tls";
-import type { OAuth2User } from "./utils/types";
-import type { Authenticator } from "./auth";
+import type { OAuth2User } from "./utils/types.mjs";
+import type { Authenticator } from "./auth.mjs";
 
 declare global {
     // Namespace augmentation
@@ -61,7 +61,7 @@ export default function loadMiddleWare(app: Polka, bot: TTBotClient, log: Logger
                 val = `s:${sign(val, secret)}`;
             }
 
-            if ("maxAge" in opts) {
+            if (opts.maxAge) {
                 opts.expires = new Date(Date.now() + opts.maxAge);
                 opts.maxAge /= 1000;
             }
@@ -77,7 +77,7 @@ export default function loadMiddleWare(app: Polka, bot: TTBotClient, log: Logger
         rs.redirect = (location: string, code?: number) => {
             redirect(rs, code, location);
         };
-        const encSocket = <TLSSocket>rq.socket;
+        const encSocket = rq.socket as TLSSocket;
         rq.protocol = rq.headers["x-forwarded-proto"] as string || (encSocket.encrypted ? "https" : "http");
         rq.secure = rq.protocol === "https";
         rs.status = status => {
@@ -96,6 +96,8 @@ export default function loadMiddleWare(app: Polka, bot: TTBotClient, log: Logger
 
         nx();
     });
+
+    //@ts-expect-error: TypeScript is stupid
     app.use(bodyParser.json({
         limit: 5 * 1024 * 1024,
     }));

@@ -20,31 +20,33 @@
 import polka from "polka";
 import type { Request } from "express";
 import { Logger } from "sosamba";
-import type { ErrorWithCode } from "./utils/types";
+import type { ErrorWithCode } from "./utils/types.mjs";
 import type { Config, TTBotClient } from "@tt-bot-dev/types";
 import { createServer as createHTTPSServer } from "https";
 import { createServer as createHTTPServer } from "http";
 import type { RequestListener } from "http";
 import csurf from "csurf";
 
-import createAuthModule from "./auth";
-import loadMiddleWare from "./middleware";
+import createAuthModule from "./auth.mjs";
+import loadMiddleWare from "./middleware.mjs";
 
 import session from "express-session";
-import SessionStore from "./utils/SessionStore";
+import SessionStore from "./utils/SessionStore.mjs";
 const SessStore = SessionStore(session);
 
-import robotsRoute from "./routes/robots";
-import authRoutes from "./routes/auth";
-import dashboardRoutes from "./routes/dashboard";
-import profileRoutes from "./routes/profile";
-import apiRoutes from "./routes/api";
-import staticRoutes from "./routes/static";
-import licenseRoutes from "./routes/versions";
+import robotsRoute from "./routes/robots.mjs";
+import authRoutes from "./routes/auth.mjs";
+import dashboardRoutes from "./routes/dashboard.mjs";
+import profileRoutes from "./routes/profile.mjs";
+import apiRoutes from "./routes/api.mjs";
+import staticRoutes from "./routes/static.mjs";
+import licenseRoutes from "./routes/versions.mjs";
 
-import render from "./utils/render";
-import makeTemplatingData from "./utils/makeTemplateData";
-import isOwner from "./utils/isOwner";
+import render from "./utils/render.mjs";
+import makeTemplatingData from "./utils/makeTemplateData.mjs";
+import isOwner from "./utils/isOwner.mjs";
+import { join } from "path";
+import { fileURLToPath } from "url";
 
 const csrfProtection = csurf({
     value: req =>
@@ -65,8 +67,8 @@ export default function launchWebServer(bot: TTBotClient, config: Config): void 
 
     const app = polka({
         async onError(err, req, res) {
-            const r = <Request><unknown>req;
-            const e = <ErrorWithCode>err;
+            const r = req as unknown as Request;
+            const e = err as ErrorWithCode;
             if (e.code === "EBADCSRFTOKEN")  {
                 res.statusCode = 403;
                 await render(res, "500", makeTemplatingData(r, bot, config, {
@@ -86,7 +88,7 @@ export default function launchWebServer(bot: TTBotClient, config: Config): void 
 
         async onNoMatch(req, res) {
             res.statusCode = 404;
-            await render(res, "404", makeTemplatingData(<Request><unknown>req, bot, config));
+            await render(res, "404", makeTemplatingData(req as unknown as Request, bot, config));
             // res.render(404);
         }
     });
@@ -98,7 +100,7 @@ export default function launchWebServer(bot: TTBotClient, config: Config): void 
     loadMiddleWare(app, bot, log, config, auth, sessStore);
 
     if (config.webserver.serveStatic) {
-        app.use("/static", staticRoutes(app, `${__dirname}/../../dist-client`));
+        app.use("/static", staticRoutes(app, join(fileURLToPath(import.meta.url), `../../../dist-client`)));
     }
 
     app.get("/", async (rq, rs) => {
@@ -112,13 +114,13 @@ export default function launchWebServer(bot: TTBotClient, config: Config): void 
     apiRoutes(app, csrfProtection, config, bot);
     licenseRoutes(app, csrfProtection, config, bot);
 
-    createHTTPServer(<RequestListener>app.handler)
+    createHTTPServer(app.handler as RequestListener)
         .listen(config.webserver.httpPort, config.webserver.host ?? "0.0.0.0", () => {
             log.info("Loaded HTTP dashboard");
         });
 
     if (config.webserver.httpsPort) {
-        createHTTPSServer(config.webserver.httpsSettings ?? {}, <RequestListener>app.handler)
+        createHTTPSServer(config.webserver.httpsSettings ?? {}, app.handler as RequestListener)
             .listen(config.webserver.httpsPort, config.webserver.host ?? "0.0.0.0", () => {
                 log.info("Loaded HTTPS dashboard");
             });

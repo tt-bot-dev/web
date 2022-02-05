@@ -19,10 +19,10 @@
 
 import type { Polka } from "polka";
 import type { Config, TTBotClient } from "@tt-bot-dev/types";
-import checkAuth from "../middleware/checkAuth";
-import render from "../utils/render";
-import makeTemplatingData from "../utils/makeTemplateData";
-import UserProfile from "../structures/UserProfile";
+import checkAuth from "../middleware/checkAuth.mjs";
+import render from "../utils/render.mjs";
+import makeTemplatingData from "../utils/makeTemplateData.mjs";
+import UserProfile from "../structures/UserProfile.mjs";
 
 export default function (app: Polka, csrfProtection: typeof import("csurf"), config: Config, bot: TTBotClient): void {
     app.get("/profile", csrfProtection(), checkAuth(), async (rq, rs) => {
