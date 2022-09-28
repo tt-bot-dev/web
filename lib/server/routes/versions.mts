@@ -34,7 +34,6 @@ export default function (app: Polka, _: typeof import("csurf"), config: Config, 
         await render(rs, "versions", makeTemplatingData(rq, bot, config, {
             pageTitle: "Versions",
             e2pVersion: process.mainModule?.require("@tt-bot-dev/e2p/package.json").version,
-            extensionRunnerVersion: "0.0.0",
             sosambaVersion: process.mainModule?.require("sosamba/package.json").version,
             selfVersion: pkg.version,
             typesVersion: process.mainModule?.require("@tt-bot-dev/types/package.json").version,
