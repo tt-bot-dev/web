@@ -96,7 +96,8 @@ export default function loadMiddleWare(app: Polka, bot: TTBotClient, log: Logger
         nx();
     });
 
-    // @ts-expect-error: TypeScript is stupid
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: Conflict between CI and local environment
     app.use(bodyParser.json({
         limit: 5 * 1024 * 1024,
     }));
