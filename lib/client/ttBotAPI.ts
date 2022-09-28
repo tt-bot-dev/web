@@ -18,10 +18,11 @@
  */
 
 import type { GuildConfig, UserProfile } from "@tt-bot-dev/types";
-import { Routes } from "../common/constants";
-import type { AllowedGuildConfigProperties } from "../common/constants";
+// @ts-expect-error: Parcel cannot deal with ESM TS imports yet
+import { Routes } from "../common/constants.mts";
+// @ts-expect-error: Parcel cannot deal with ESM TS imports yet
+import type { AllowedGuildConfigProperties } from "../common/constants.mts";
 import createModal from "./ui/InfoModal";
-
 export interface RoleOrChannel {
     name: string;
     id: string;

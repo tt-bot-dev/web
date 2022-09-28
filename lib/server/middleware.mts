@@ -50,14 +50,13 @@ export default function loadMiddleWare(app: Polka, bot: TTBotClient, log: Logger
         // @ts-expect-error: I cannot do types properly for this
         rs.cookie = (name, value, options) => {
             const opts = Object.assign({}, options);
-            // @ts-expect-error: This is not typed by @types/cookie-parser correctly
             const { secret } = rq;
 
             let val = typeof value === "object"
                 ? `j:${JSON.stringify(value)}`
                 : String(value);
 
-            if (options.signed) {
+            if (options.signed && secret) {
                 val = `s:${sign(val, secret)}`;
             }
 

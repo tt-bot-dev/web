@@ -18,9 +18,16 @@
 
 lint:
   stage: test
-  image: node:alpine
+  image: node:current-alpine
   script:
-    - apk add bash
     - rm package.json
     - npm i @tt-bot-dev/eslint-config @typescript-eslint/eslint-plugin @typescript-eslint/parser
-    - npx eslint --ext .js,.ts .
+    - npx eslint --ext .js,.ts,.mjs,.mts .
+
+test_build:
+  stage: test
+  image: node:current-alpine
+  script:
+    - npm i --omit=dev --ignore-scripts
+    - npm run build::server
+    - npm run build::client
