@@ -17,7 +17,8 @@
  * along with @tt-bot-dev/web.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { Polka } from "polka";
+import type { Next, Polka } from "polka";
+import type { Request, Response } from "express-serve-static-core";
 import type { Logger } from "sosamba";
 import type { Config, TTBotClient } from "@tt-bot-dev/types";
 import cookieParser from "cookie-parser";
@@ -96,11 +97,9 @@ export default function loadMiddleWare(app: Polka, bot: TTBotClient, log: Logger
         nx();
     });
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore: Conflict between CI and local environment
     app.use(bodyParser.json({
         limit: 5 * 1024 * 1024,
-    }));
+    }) as (rq: Request, rs: Response, nx: Next) => void);
 
     app.use(cookieParser(config.clientSecret));
     app.use(session({
