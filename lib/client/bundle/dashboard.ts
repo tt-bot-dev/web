@@ -22,7 +22,6 @@ import * as Selectors from "../ui/GuildConfigSelectors";
 import API from "../ttBotAPI";
 import type { APIGuildConfig } from "../ttBotAPI";
 
-const inputPrefix = <HTMLInputElement>document.querySelector(Selectors.PrefixOption)!;
 const inputFarewellMessage = <HTMLInputElement>document.querySelector(Selectors.FarewellMessageOption)!;
 const inputModRole = <HTMLSelectElement>document.querySelector(Selectors.ModRoleOption)!;
 const inputWelcomeMessage = <HTMLInputElement>document.querySelector(Selectors.WelcomeMessageOption)!;
@@ -81,7 +80,6 @@ function unlockElement(el: HTMLInputElement | HTMLSelectElement | HTMLOptionElem
 }
 
 function setValues(cfg: GuildConfig) {
-    inputPrefix.value = cfg.prefix ?? "";
     inputFarewellMessage.value = cfg.farewellMessage ?? "";
     inputWelcomeMessage.value = cfg.greetingMessage ?? "";
     inputLogEvents.value = cfg.logEvents ?? "";
@@ -95,7 +93,6 @@ function setValues(cfg: GuildConfig) {
     selectElementByID(inputModlogChannel, cfg.modlogChannel);
     selectElementByID(inputLocale, cfg.locale);
 
-    unlockElement(inputPrefix);
     unlockElement(inputModRole);
     unlockElement(inputModlogChannel);
     unlockElement(inputFarewellMessage);
@@ -124,7 +121,6 @@ Promise.all([
 
     API.bindToSaveButton<(data: APIGuildConfig) => Promise<GuildConfig>, [], APIGuildConfig, GuildConfig>
         ((data: APIGuildConfig) => API.updateGuildConfig(API.guildID!, data), saveButton, setValues, (cb: (_: APIGuildConfig) => void) => {
-            const { value: prefix } = inputPrefix;
             const { value: modRole } = inputModRole.selectedOptions[0] ?? { value: "" };
             const { value: farewellMessage } = inputFarewellMessage;
             const { value: logEvents } = inputLogEvents;
@@ -138,7 +134,6 @@ Promise.all([
             const { value: locale } = inputLocale.selectedOptions[0] ?? { value: "" };
 
             cb(<APIGuildConfig>{
-                prefix,
                 modRole,
                 farewellMessage,
                 farewellChannelId,

@@ -20,7 +20,6 @@
 export const DiscordAPIBase = "https://discord.com/api/v9/oauth2";
 export const OAuthScopes = ["identify", "guilds"] as const;
 export const AllowedGuildConfigProperties = [
-    "prefix",
     "modRole",
     "farewellMessage",
     "farewellChannelId",
