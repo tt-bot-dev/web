@@ -34,16 +34,6 @@ export const AllowedGuildConfigProperties = [
     "locale",
 ] as const;
 
-export const AllowedGuildExtensionProperties = [
-    "code",
-    "allowedChannels",
-    "allowedRoles",
-    "commandTrigger",
-    "name",
-    "store",
-    "flags",
-] as const;
-
 export const AllowedUserProfileProperties = [
     "locale",
     "timezone",
