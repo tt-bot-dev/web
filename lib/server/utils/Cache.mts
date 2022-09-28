@@ -26,6 +26,7 @@ export default class Cache<V> {
     } & Partial<ErrorObject>> = {};
 
     private _fetching: Record<string, Promise<V>> = {};
+
     constructor(private resetTime: number,
         private getter: (key: string, cache: Cache<V>) => Promise<V | ErrorObject>,
         private cleaner: (err: Error, addl: unknown) => Promise<void>) {}
@@ -60,7 +61,7 @@ export default class Cache<V> {
         }
         return this._fetching[item] = this.getter(item, this).then(data => {
             if ((data as ErrorObject).error) {
-                console.error((data as ErrorObject).error); //eslint-disable-line no-console
+                console.error((data as ErrorObject).error); // eslint-disable-line no-console
 
                 // Intended no-op
                 // eslint-disable-next-line @typescript-eslint/no-empty-function

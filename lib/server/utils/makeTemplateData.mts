@@ -20,7 +20,7 @@
 import type { APIUser } from "discord-api-types/v9";
 import type { Config, TTBotClient } from "@tt-bot-dev/types";
 import type { Request } from "express";
-const { default: { version: ttbotVersion }} = await import(`${process.mainModule?.path}/lib/package.mjs`);
+const { default: { version: ttbotVersion } } = await import(`${process.mainModule?.path}/lib/package.mjs`);
 
 export default function makeTemplatingData<T>(rq: Request, bot: TTBotClient, config: Config, object?: T): ({
     user: APIUser | null;
@@ -49,6 +49,6 @@ export default function makeTemplatingData(rq: Request, bot: TTBotClient, config
         bot,
         config,
         ttbotVersion,
-        ...object || {}
+        ...object || {},
     };
 }

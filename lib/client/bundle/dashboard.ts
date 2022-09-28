@@ -114,7 +114,7 @@ Promise.all([
     API.getAvailableChannels(API.guildID!),
     API.getAvailableRoles(API.guildID!, false),
     API.getAvailableRoles(API.guildID!, true),
-    API.getGuildConfig(API.guildID!)
+    API.getGuildConfig(API.guildID!),
 ]).then(([channels, roles, rolesWithoutHierarchy, config]) => {
     channelPickers.forEach(loadPickers(true, channels));
     rolePickers.forEach(loadPickers(false, roles.filter(r => r.id !== API.guildID)));
@@ -123,9 +123,7 @@ Promise.all([
     setValues(config);
 
     API.bindToSaveButton<(data: APIGuildConfig) => Promise<GuildConfig>, [], APIGuildConfig, GuildConfig>
-        ((data: APIGuildConfig) => {
-            return API.updateGuildConfig(API.guildID!, data);
-        }, saveButton, setValues, (cb: (_: APIGuildConfig) => void) => {
+        ((data: APIGuildConfig) => API.updateGuildConfig(API.guildID!, data), saveButton, setValues, (cb: (_: APIGuildConfig) => void) => {
             const { value: prefix } = inputPrefix;
             const { value: modRole } = inputModRole.selectedOptions[0] ?? { value: "" };
             const { value: farewellMessage } = inputFarewellMessage;
@@ -151,7 +149,7 @@ Promise.all([
                 memberRole,
                 logChannel,
                 modlogChannel,
-                locale
+                locale,
             });
         }, () => API.guildConfig!);
 

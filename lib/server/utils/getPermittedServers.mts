@@ -36,15 +36,15 @@ export default function getGuilds(bot: TTBotClient, config: Config, rq: Request,
         return [
             ...bot.guilds.map(g => ({
                 ...g,
-                isOnServer: true
+                isOnServer: true,
             })),
             ...rq.user.guilds.filter(g => {
                 const permission = new Permission(g.permissions, 0);
                 return !bot.guilds.has(g.id) && (permission.has("administrator") || permission.has("manageGuild"));
             }).map(g => ({
                 ...g,
-                isOnServer: false
-            }))
+                isOnServer: false,
+            })),
         ];
     } else {
         return rq.user.guilds.filter(g => {
@@ -64,7 +64,7 @@ export default function getGuilds(bot: TTBotClient, config: Config, rq: Request,
             }
         }).map(g => ({
             ...g,
-            isOnServer: bot.guilds.has(g.id)
+            isOnServer: bot.guilds.has(g.id),
         }));
     }
 }

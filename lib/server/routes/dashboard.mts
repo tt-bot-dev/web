@@ -29,7 +29,7 @@ const { availableTypes } = await import(`${process.mainModule?.path}/lib/logging
 async function makeDefaultConfig(db: DBProvider, config: Config, guildID: string): Promise<Partial<GuildConfig>> {
     const guildConfig = {
         id: guildID,
-        prefix: config.prefix
+        prefix: config.prefix,
     };
     await db.createGuildConfig(guildConfig);
     return guildConfig;
@@ -41,7 +41,7 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
         if (!guilds) return;
         await render(rs, "dashboard", makeTemplatingData(rq, bot, config, {
             guilds,
-            pageTitle: "Dashboard"
+            pageTitle: "Dashboard",
         }));
     });
 
@@ -62,7 +62,7 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
                 availableLoggingTypes: availableTypes,
                 // @ts-expect-error: Not typed in sosamba yet
                 locales: Array.from(bot.localeManager.locales.keys()),
-                csrfToken: rq.csrfToken()
+                csrfToken: rq.csrfToken(),
             }));
         }
     });

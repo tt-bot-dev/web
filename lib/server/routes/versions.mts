@@ -37,7 +37,7 @@ export default function (app: Polka, _: typeof import("csurf"), config: Config, 
             extensionRunnerVersion: "0.0.0",
             sosambaVersion: process.mainModule?.require("sosamba/package.json").version,
             selfVersion: pkg.version,
-            typesVersion: process.mainModule?.require("@tt-bot-dev/types/package.json").version
+            typesVersion: process.mainModule?.require("@tt-bot-dev/types/package.json").version,
         }));
     });
 }

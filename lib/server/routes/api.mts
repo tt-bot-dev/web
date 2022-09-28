@@ -37,7 +37,7 @@ declare global {
 function isValidTz(tz: string) {
     try {
         Intl.DateTimeFormat(undefined, {
-            timeZone: tz
+            timeZone: tz,
         });
         return true;
     } catch {
@@ -52,7 +52,7 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
         if (!guilds.find(g => g.isOnServer && g.id === rq.params.guildID)) {
             rs.status(403);
             rs.send({
-                error: "Forbidden"
+                error: "Forbidden",
             });
         } else {
             // The bot is present on the guild
@@ -62,7 +62,7 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
                 .sort((a, b) => a.position - b.position)
                 .map(c => ({
                     name: c.name,
-                    id: c.id
+                    id: c.id,
                 })));
         }
     });
@@ -73,7 +73,7 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
         if (!guilds.find(g => g.isOnServer && g.id === rq.params.guildID)) {
             rs.status(403);
             rs.send({
-                error: "Forbidden"
+                error: "Forbidden",
             });
         } else {
             // The bot is present on the guild
@@ -95,7 +95,7 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
                         // The role is present on the guild
                         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                     }, guild.roles.get(guild.id)!) || {
-                        position: -1
+                        position: -1,
                     };
                 roles = guild.roles.filter(r => r.position < highestRole.position);
             }
@@ -103,7 +103,7 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
             rs.send(roles.sort((a, b) => b.position - a.position)
                 .map(r => ({
                     name: r.name,
-                    id: r.id
+                    id: r.id,
                 })));
         }
     });
@@ -114,7 +114,7 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
         if (!guilds.find(g => g.isOnServer && g.id === rq.params.guildID)) {
             rs.status(403);
             rs.send({
-                error: "Forbidden"
+                error: "Forbidden",
             });
         } else {
             const data = await bot.db.getGuildConfig(rq.params.guildID);
@@ -128,7 +128,7 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
         if (!guilds.find(g => g.isOnServer && g.id === rq.params.guildID)) {
             rs.status(403);
             rs.send({
-                error: "Forbidden"
+                error: "Forbidden",
             });
         } else {
             const filteredBody: Partial<GuildConfig> = {};
@@ -149,14 +149,14 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
         if (!profileData) {
             rs.status(404);
             rs.send({
-                error: "Not Found"
+                error: "Not Found",
             });
             return;
         }
         const profile = new UserProfile(profileData, bot);
         rs.send({
             ...profile,
-            csrfToken: rq.csrfToken()
+            csrfToken: rq.csrfToken(),
         });
     });
 
@@ -164,15 +164,16 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
         const filteredBody: Partial<Profile> = {};
         // Breaks intended typing
         // eslint-disable-next-line no-extra-parens
-        Object.keys<Record<string, unknown>>(rq.body).filter(k => (AllowedUserProfileProperties as readonly string[]).includes(k)).forEach(k => {
-            filteredBody[k as keyof Profile] = rq.body[k] || null;
-        });
+        Object.keys<Record<string, unknown>>(rq.body).filter(k => (AllowedUserProfileProperties as readonly string[]).includes(k))
+            .forEach(k => {
+                filteredBody[k as keyof Profile] = rq.body[k] || null;
+            });
         filteredBody.id = rq.user.id;
         // @ts-expect-error: Not typed in Sosamba yet
         if (!bot.localeManager.locales.has(filteredBody.locale)) {
             rs.status(400);
             rs.send({
-                error: "Invalid locale"
+                error: "Invalid locale",
             });
             return;
         }
@@ -180,7 +181,7 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
         if (filteredBody.timezone && !isValidTz(filteredBody.timezone)) {
             rs.status(400);
             rs.send({
-                error: "Invalid timezone. Refer to https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List for a list of correct timezones"
+                error: "Invalid timezone. Refer to https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List for a list of correct timezones",
             });
             return;
         }
@@ -202,7 +203,7 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
         if (!await bot.db.getUserProfile(rq.user.id)) {
             rs.status(404);
             rs.send({
-                error: "Profile not found"
+                error: "Profile not found",
             });
             return;
         }

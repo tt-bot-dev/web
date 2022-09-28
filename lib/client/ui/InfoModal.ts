@@ -30,7 +30,7 @@ export default function createModal(title: string, ...body: Parameters<ParentNod
         modalCard.addEventListener("animationend", () => {
             modal.remove();
         }, {
-            once: true
+            once: true,
         });
     };
 

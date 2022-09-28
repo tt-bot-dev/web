@@ -26,7 +26,7 @@ export default function checkNotAuth(api = false): (rq: Request, rs: Response, n
         if (api) {
             rs.status(403).send({
                 error: "Forbidden",
-                description: "You're logged into the API already."
+                description: "You're logged into the API already.",
             });
             return;
         }

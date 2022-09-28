@@ -49,7 +49,7 @@ export default function loadMiddleWare(app: Polka, bot: TTBotClient, log: Logger
     app.use((rq, rs, nx) => {
         // @ts-expect-error: I cannot do types properly for this
         rs.cookie = (name, value, options) => {
-            const opts = Object.assign({}, options);
+            const opts = { ...options };
             const { secret } = rq;
 
             let val = typeof value === "object"
@@ -72,7 +72,7 @@ export default function loadMiddleWare(app: Polka, bot: TTBotClient, log: Logger
             rs.setHeader("Set-Cookie", serialize(name, val, opts));
         };
 
-        //@ts-expect-error: Yet another thing I don't want to type
+        // @ts-expect-error: Yet another thing I don't want to type
         rs.redirect = (location: string, code?: number) => {
             redirect(rs, code, location);
         };
@@ -96,7 +96,7 @@ export default function loadMiddleWare(app: Polka, bot: TTBotClient, log: Logger
         nx();
     });
 
-    //@ts-expect-error: TypeScript is stupid
+    // @ts-expect-error: TypeScript is stupid
     app.use(bodyParser.json({
         limit: 5 * 1024 * 1024,
     }));
@@ -108,8 +108,8 @@ export default function loadMiddleWare(app: Polka, bot: TTBotClient, log: Logger
         saveUninitialized: false,
         store,
         cookie: {
-            maxAge: 8064e5
-        }
+            maxAge: 8064e5,
+        },
     }));
 
     app.use(auth.checkAuth);

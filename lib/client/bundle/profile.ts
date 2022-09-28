@@ -57,14 +57,12 @@ deleteButton.addEventListener("click", () => {
 });
 
 API.bindToSaveButton<typeof API["updateUserProfile"], [], Omit<UserProfile, "id" | "fake">, UserProfile>
-(d => {
-    return API.updateUserProfile(d);
-}, saveButton, setValues, cb => {
+(d => API.updateUserProfile(d), saveButton, setValues, cb => {
     const { value: locale } = localeSelector.selectedOptions[0] ?? { value: "en" };
     
     cb({
         timezone: timezoneField.value,
-        locale
+        locale,
     });
 }, () => API.userProfile!);
 

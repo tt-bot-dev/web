@@ -28,7 +28,7 @@ export const languageMap = {
     "sk": "sk-SK",
     "sk-SK": "sk-SK",
     "ro": "ro-RO",
-    "ro-RO": "ro-RO"
+    "ro-RO": "ro-RO",
 } as Record<string, string>;
 
 export const autofillButton = <HTMLButtonElement>document.querySelector(Selectors.Autofill)!;

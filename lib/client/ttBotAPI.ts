@@ -40,9 +40,11 @@ export class FetchError extends Error {
 
 export class TTBotAPI {
     public csrfToken?: string = TTBotAPI.getCSRFTokenFromMeta();
+
     public guildID?: string = TTBotAPI.getGuildIDFromMeta();
 
     public guildConfig?: GuildConfig;
+
     public userProfile?: UserProfile;
 
     private savingDashboardChanges = false;
@@ -55,8 +57,8 @@ export class TTBotAPI {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "CSRF-Token": this.csrfToken
-            }
+                "CSRF-Token": this.csrfToken,
+            },
         });
         const cfg = await r.json();
         return this.guildConfig = cfg;
@@ -64,21 +66,21 @@ export class TTBotAPI {
 
     public async getAvailableChannels(guildID: string): Promise<RoleOrChannel[]> {
         const r = await this.fetch(Routes.guildChannels(guildID), {
-            credentials: "include"
+            credentials: "include",
         });
         return await r.json();
     }
 
     public async getAvailableRoles(guildID: string, ignoreHierarchy = false): Promise<RoleOrChannel[]> {
         const r = await this.fetch(`${Routes.guildRoles(guildID)}${ignoreHierarchy ? "?ignoreHierarchy=true" : ""}`, {
-            credentials: "include"
+            credentials: "include",
         });
         return await r.json();
     }
 
     public async getGuildConfig(guildID: string): Promise<GuildConfig> {
         const r = await this.fetch(Routes.guildConfig(guildID), {
-            credentials: "include"
+            credentials: "include",
         });
         const cfg = await r.json();
         return this.guildConfig = cfg;
@@ -86,7 +88,7 @@ export class TTBotAPI {
 
     public async getUserProfile(): Promise<UserProfile> {
         const r = await this.fetch(Routes.userProfile(), {
-            credentials: "include"
+            credentials: "include",
         });
         const profile = await r.json();
         this.csrfToken = profile.csrfToken;
@@ -102,8 +104,8 @@ export class TTBotAPI {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "CSRF-Token": this.csrfToken
-            }
+                "CSRF-Token": this.csrfToken,
+            },
         });
         const profile = await r.json();
         return this.userProfile = profile;
@@ -116,8 +118,8 @@ export class TTBotAPI {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-                "CSRF-Token": this.csrfToken
-            }
+                "CSRF-Token": this.csrfToken,
+            },
         });
     }
 

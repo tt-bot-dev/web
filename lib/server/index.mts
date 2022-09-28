@@ -56,13 +56,13 @@ const csrfProtection = csurf({
         req.headers["csrf-token"] ||
         req.headers["xsrf-token"] ||
         req.headers["x-csrf-token"] ||
-        req.headers["x-xsrf-token"]
+        req.headers["x-xsrf-token"],
 }) as unknown as typeof csurf;
 
 
 export default function launchWebServer(bot: TTBotClient, config: Config): void {
     const log = new Logger({
-        name: "Web Panel"
+        name: "Web Panel",
     });
 
     const app = polka({
@@ -73,7 +73,7 @@ export default function launchWebServer(bot: TTBotClient, config: Config): void 
                 res.statusCode = 403;
                 await render(res, "500", makeTemplatingData(r, bot, config, {
                     error: "Missing CSRF token! Please try this action again.",
-                    pageTitle: "Cross Site Request Forgery"
+                    pageTitle: "Cross Site Request Forgery",
                 }));
                 return;
             }
@@ -82,7 +82,7 @@ export default function launchWebServer(bot: TTBotClient, config: Config): void 
             res.statusCode = 500;
             await render(res, "500", makeTemplatingData(r, bot, config, {
                 pageTitle: "Error",
-                error: r.user && isOwner(config, r.user.id) ? err.stack : err.message
+                error: r.user && isOwner(config, r.user.id) ? err.stack : err.message,
             }));
         },
 
@@ -90,7 +90,7 @@ export default function launchWebServer(bot: TTBotClient, config: Config): void 
             res.statusCode = 404;
             await render(res, "404", makeTemplatingData(req as unknown as Request, bot, config));
             // res.render(404);
-        }
+        },
     });
 
     const sessStore = new SessStore(bot.db, log);
@@ -100,7 +100,7 @@ export default function launchWebServer(bot: TTBotClient, config: Config): void 
     loadMiddleWare(app, bot, log, config, auth, sessStore);
 
     if (config.webserver.serveStatic) {
-        app.use("/static", staticRoutes(app, join(fileURLToPath(import.meta.url), `../../../dist-client`)));
+        app.use("/static", staticRoutes(app, join(fileURLToPath(import.meta.url), "../../../dist-client")));
     }
 
     app.get("/", async (rq, rs) => {

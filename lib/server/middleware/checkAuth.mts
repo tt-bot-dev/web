@@ -26,7 +26,7 @@ export default function checkAuth(api = false): (rq: Request, rs: Response, nx: 
         if (api) {
             rs.status(401).send({
                 error: "Unauthorized",
-                description: "You aren't authorized to do this operation."
+                description: "You aren't authorized to do this operation.",
             });
             return;
         }

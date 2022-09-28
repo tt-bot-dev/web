@@ -29,7 +29,6 @@ import type { APIUser, RESTGetAPICurrentUserGuildsResult } from "discord-api-typ
 import type { Next } from "polka";
 import type { Config, TTBotClient } from "@tt-bot-dev/types";
 import type { Store } from "express-session";
-import bodyParser from "body-parser";
 
 export type UserData = {
     user: OAuth2User,
@@ -55,20 +54,20 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
     }> {
         const c = cache._cache[token]?.data?.client ?? new Client(`Bearer ${token}`, {
             intents: 0,
-            restMode: true
+            restMode: true,
         });
         try {
             const [ userData, guilds ] = await Promise.all([
                 c.requestHandler.request("GET", "/users/@me", true) as Promise<APIUser>,
-                c.requestHandler.request("GET", "/users/@me/guilds", true) as Promise<RESTGetAPICurrentUserGuildsResult>
+                c.requestHandler.request("GET", "/users/@me/guilds", true) as Promise<RESTGetAPICurrentUserGuildsResult>,
             ]);
     
             return {
                 user: {
                     ...userData,
-                    guilds
+                    guilds,
                 },
-                client: c
+                client: c,
             };
     
         } catch (err) {
@@ -128,12 +127,12 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
                 method: "POST",
                 headers: {
                     authorization: authToken,
-                    "content-type": "application/x-www-form-urlencoded"
+                    "content-type": "application/x-www-form-urlencoded",
                 },
                 body: new URLSearchParams({
                     refresh_token: code,
-                    grant_type: "refresh_token"
-                }).toString()
+                    grant_type: "refresh_token",
+                }).toString(),
             });
 
             const body = await data.body.json();
@@ -146,7 +145,7 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
                 date: dateAfterReq,
                 // Most decent browsers provide a Host header nowadays
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                redirURI: `${rq.protocol}://${rq.headers.host!}/callback`
+                redirURI: `${rq.protocol}://${rq.headers.host!}/callback`,
             };
             rq.user = userData.user;
         },
@@ -156,7 +155,7 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
                 method: "POST",
                 headers: {
                     authorization: authToken,
-                    "content-type": "application/x-www-form-urlencoded"
+                    "content-type": "application/x-www-form-urlencoded",
                 },
                 body: new URLSearchParams({
                     client_id: config.clientID,
@@ -166,8 +165,8 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
                     grant_type: "authorization_code",
                     // Most decent browsers provide a Host header nowadays
                     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    redirect_uri: `${rq.protocol}://${rq.headers.host!}/callback`
-                }).toString()
+                    redirect_uri: `${rq.protocol}://${rq.headers.host!}/callback`,
+                }).toString(),
             });
             const body = await data.body.json();
             const { scope } = body;
@@ -176,17 +175,17 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
                 const sess = {
                     tokenData: {
                         accessToken: body.access_token,
-                        refreshToken: body.refresh_token
+                        refreshToken: body.refresh_token,
                     },
 
                     destroy(cb: (err: unknown) => void): void {
                         cb(undefined);
-                    }
+                    },
                 };
 
                 await this.logout({
                     // @ts-expect-error: Partial object to discard the tokens
-                    session: sess
+                    session: sess,
                 });
                 throw new Error("Scopes required for operation of the application were not granted");
             }
@@ -200,7 +199,7 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
                 date: dateAfterReq,
                 // Most decent browsers provide a Host header nowadays
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                redirURI: `${rq.protocol}://${rq.headers.host!}/callback`
+                redirURI: `${rq.protocol}://${rq.headers.host!}/callback`,
             };
 
             rq.user = userData.user;
@@ -216,33 +215,33 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
                     method: "POST",
                     headers: {
                         authorization: authToken,
-                        "content-type": "application/x-www-form-urlencoded"
+                        "content-type": "application/x-www-form-urlencoded",
                     },
                     body: new URLSearchParams({
                         token: rq.session.tokenData.accessToken,
-                        token_type_hint: "access_token"
-                    }).toString()
+                        token_type_hint: "access_token",
+                    }).toString(),
                 }),
 
                 request(`${DiscordAPIBase}/token/revoke`, {
                     method: "POST",
                     headers: {
                         authorization: authToken,
-                        "content-type": "application/x-www-form-urlencoded"
+                        "content-type": "application/x-www-form-urlencoded",
                     },
                     body: new URLSearchParams({
                         token: rq.session.tokenData.refreshToken,
-                        token_type_hint: "refresh_token"
-                    }).toString()
+                        token_type_hint: "refresh_token",
+                    }).toString(),
                 }),
                 
                 new Promise<void>(rs => {
                     const v = rq.session.tokenData?.accessToken;
                     userCache.remove(v);
                     rq.session.destroy(() => rs());
-                })
+                }),
             ]);
-        }
+        },
     };
 
     return auth;

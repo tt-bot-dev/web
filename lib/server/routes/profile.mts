@@ -32,7 +32,7 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
                 pageTitle: "Profile",
                 // @ts-expect-error: Not typed in sosamba yet
                 locales: Array.from(bot.localeManager.locales.keys()),
-                csrfToken: rq.csrfToken()
+                csrfToken: rq.csrfToken(),
             }));
         } else {
             const profile = new UserProfile(profileData, bot);
@@ -41,7 +41,7 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
                 // @ts-expect-error: Not typed in sosamba yet
                 locales: Array.from(bot.localeManager.locales.keys()),
                 profile,
-                csrfToken: rq.csrfToken()
+                csrfToken: rq.csrfToken(),
             }));
         }
     });

@@ -37,6 +37,7 @@ export default function(session: typeof import("express-session")): _Store {
                     this.logger.warn(`Couldn't purge the sessions:\n${err.stack}`);
                 });
         }, 60000);
+
         constructor(private db: DBProvider, private logger: Logger) {
             super();
         }
@@ -58,7 +59,7 @@ export default function(session: typeof import("express-session")): _Store {
         set(sessionID: string, session: SessionData, cb: (err: unknown) => void = noop) {
             return this.db.setSession(sessionID, {
                 expires: Date.now() + (session.cookie.originalMaxAge || 86400000),
-                data: session
+                data: session,
             }).then(() => {
                 cb(null);
             }, err => {

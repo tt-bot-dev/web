@@ -31,7 +31,7 @@ export const AllowedGuildConfigProperties = [
     "logChannel",
     "logEvents",
     "modlogChannel",
-    "locale"
+    "locale",
 ] as const;
 
 export const AllowedGuildExtensionProperties = [
@@ -41,17 +41,17 @@ export const AllowedGuildExtensionProperties = [
     "commandTrigger",
     "name",
     "store",
-    "flags"
+    "flags",
 ] as const;
 
 export const AllowedUserProfileProperties = [
     "locale",
-    "timezone"
+    "timezone",
 ] as const;
 
 export const Routes = {
     guildChannels: (guildID = ":guildID") => `/api/v2/guilds/${guildID}/channels`,
     guildRoles: (guildID = ":guildID") => `/api/v2/guilds/${guildID}/roles`,
     guildConfig: (guildID = ":guildID") => `/api/v2/guilds/${guildID}/config`,
-    userProfile: () => "/api/v2/users/@me/profile"
+    userProfile: () => "/api/v2/users/@me/profile",
 } as const;

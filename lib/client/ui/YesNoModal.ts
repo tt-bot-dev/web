@@ -31,7 +31,7 @@ export default function createModal(title: string, yesCaption: string, yesButton
         modalCard.addEventListener("animationend", () => {
             modal.remove();
         }, {
-            once: true
+            once: true,
         });
     };
 

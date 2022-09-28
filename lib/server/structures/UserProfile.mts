@@ -22,11 +22,15 @@ import type { TTBotClient, UserProfile as Profile } from "@tt-bot-dev/types";
 // Keep in sync with UserProfile in main repo
 export default class UserProfile implements Profile {
     public id: string;
+
     public fake?: boolean;
+
     public timezone: string | null;
+
     public locale: string | null;
 
     #bot: TTBotClient;
+
     constructor(data: Profile, bot: TTBotClient) {
         this.#bot = bot;
         this.id = data.id;
@@ -43,7 +47,7 @@ export default class UserProfile implements Profile {
         return {
             id: data.id,
             timezone: data.timezone && bot.dataEncryption.encrypt(data.timezone),
-            locale: data.locale && bot.dataEncryption.encrypt(data.locale)
+            locale: data.locale && bot.dataEncryption.encrypt(data.locale),
         };
     }
 }

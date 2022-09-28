@@ -34,13 +34,13 @@ export default function (app: Polka, csrfProtection: typeof import("csurf"), con
     });
 
     app.get("/callback", csrfProtection({
-        ignoreMethods: ["HEAD", "OPTIONS"]
+        ignoreMethods: ["HEAD", "OPTIONS"],
     }), async (rq, rs) => {
         if (rq.query.error) {
             rs.status(401);
             await render(rs, "500", makeTemplatingData(rq, bot, config, {
                 error: `OAuth authorization error: ${rq.query.error_description} (${rq.query.error})`,
-                not500: true
+                not500: true,
             }));
             return;
         }

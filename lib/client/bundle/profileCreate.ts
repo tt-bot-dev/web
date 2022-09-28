@@ -34,7 +34,7 @@ saveButton.addEventListener("click", async () => {
     const { value: locale } = localeSelector.selectedOptions[0] ?? { value: "en" };
     const d: Omit<UserProfile, "id"> = {
         timezone: timezoneField.value,
-        locale
+        locale,
     };
     
     
