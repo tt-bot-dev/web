@@ -191,7 +191,7 @@ div.monaco-wrapper {
         }
     }
 }
-@import "~/node_modules/bulma/bulma.sass";
+@import "npm:bulma/bulma.sass";
 
 .control.is-extension-flag {
     .tags {
