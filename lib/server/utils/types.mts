@@ -17,7 +17,7 @@
  * along with @tt-bot-dev/web.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { APIUser, RESTGetAPICurrentUserGuildsResult } from "discord-api-types/v9";
+import type { APIUser, RESTGetAPICurrentUserGuildsResult } from "discord-api-types/v10";
 
 export type ErrorWithCode = Error & {
     code: string | number;

@@ -23,7 +23,7 @@ import { AllowedGuildConfigProperties, AllowedUserProfileProperties, Routes } fr
 import getGuilds from "../utils/getPermittedServers.mjs";
 import type { Polka } from "polka";
 import type { Config, GuildConfig, TTBotClient, UserProfile as Profile } from "@tt-bot-dev/types";
-import type { Role } from "eris";
+import type { Role } from "@projectdysnomia/dysnomia";
 
 const authNeeded = checkAuth(true);
 

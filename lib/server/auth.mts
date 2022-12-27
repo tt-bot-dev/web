@@ -18,7 +18,7 @@
  */
 
 import type { OAuth2User, ErrorWithCode } from "./utils/types.mjs";
-import type { Client as ErisClient } from "eris";
+import type { Client as ErisClient } from "@projectdysnomia/dysnomia";
 import type { Request, Response } from "express-serve-static-core";
 import { Eris } from "sosamba";
 const { Client } = Eris;
@@ -53,7 +53,6 @@ export default function createAuthModule(bot: TTBotClient, config: Config, sessS
         client: ErisClient
     }> {
         const c = cache._cache[token]?.data?.client ?? new Client(`Bearer ${token}`, {
-            intents: 0,
             restMode: true,
         });
         try {
