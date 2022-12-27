@@ -33,4 +33,6 @@ test_build:
     - rm /usr/local/bin/yarnpkg
     - npm i -g corepack
     - corepack prepare yarn@stable --activate
-    - yarn install
+    - yarn install --mode=skip-build
+    - yarn run build::server
+    - yarn run build::client
