@@ -29,6 +29,10 @@ test_build:
   image: node:current-alpine
   script:
     - apk add git
-    - npm i --omit=dev --ignore-scripts
-    - npm run build::server
-    - npm run build::client
+    - rm /usr/local/bin/yarn
+    - rm /usr/local/bin/yarnpkg
+    - npm i -g corepack
+    - corepack enable
+    - yarn install --mode=skip-build
+    - yarn run build::server
+    - yarn run build::client
